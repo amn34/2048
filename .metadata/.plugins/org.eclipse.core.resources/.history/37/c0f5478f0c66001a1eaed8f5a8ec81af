@@ -1,0 +1,8 @@
+package logic;
+
+import java.beans.PropertyChangeListener;
+
+
+public interface PropertyChangeEnabledGameControls extends GameControls{
+
+}

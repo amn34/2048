@@ -1,0 +1,11 @@
+package logic;
+
+import java.beans.PropertyChangeListener;
+
+
+public interface PropertyChangeEnabledGameControls extends GameControls{
+
+	
+	String PROPERTY_EXAMPEL = "THIS IS AN EXAMPLE";
+	
+}

@@ -1,0 +1,138 @@
+package view;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+import models.Block;
+
+public class GamePanel extends JPanel {
+	
+    /**
+     * The UID of this class (to avoid warnings).
+     */
+    private static final long serialVersionUID = 4269666L;
+    
+    /**
+     * The font used by this panel.
+     */
+    private static final Font FONT = new Font("SansSerif", Font.BOLD, 9);
+    
+    /**
+     * The stroke used for painting.
+     */
+    private static final BasicStroke STROKE = new BasicStroke(3, BasicStroke.CAP_BUTT,
+                                                              BasicStroke.JOIN_MITER, 2,
+                                                              new float[] {2, 2, 2, 2}, 0);
+    
+    /**
+     * The size in pixels of a side of one "square" on the grid.
+     */
+    private static final int SQUARE_SIZE = 40;
+    
+    
+    /**
+     * The game grid 
+     */
+    private Block[][] myBoard;
+    
+    /**
+     * Construct a new Panel.
+     * @param theWidth width of the 2D grid of Terrain that defines the map
+     * @param theHeight height of the 2D grid of Terrain that defines the map
+     */
+    public GamePanel(final int theWidth, final int theHeight) {
+        super();
+        
+        //4x4 grid 
+        myBoard = new Block[4][4];
+        setPreferredSize(new Dimension(theWidth * SQUARE_SIZE,
+                                       theHeight * SQUARE_SIZE));
+        setBackground(Color.GREEN);
+        setFont(FONT);
+    }
+    
+    // Instance Methods 
+
+    /**
+     * Paints this panel on the screen with the specified Graphics object.
+     * 
+     * @param theGraphics The Graphics object.
+     */
+    @Override
+    public void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2 = (Graphics2D) theGraphics;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setStroke(STROKE);
+        // draw game board map
+        drawBoard(g2);
+    }
+    
+    /**
+     * Draws the game board with the specified Graphics2D object. 
+     * @param theGraphics the Graphics2D object. 
+     */
+    private void drawBoard(final Graphics2D theGraphics) {
+    	
+    	for(int i = 0; i < myBoard.length; i++) {
+			final int topy = i * SQUARE_SIZE; //determines the y position of the square
+    		for(int j = 0; j < myBoard[i].length; i++) {
+    			final int leftx = j * SQUARE_SIZE; //determines the x position of the block
+    			int num = myBoard[i][j].getNumber();
+    			drawBlock(theGraphics, i, j, theNumber);
+
+    		}
+    	} 	
+    }
+    
+    
+    private void drawBlock(Graphics2D theGraphics, int i, int j, int theNumber) {
+        final String imageFilename = "icons//" + v.getImageFileName();
+        //final String imageFilename = v.getImageFileName();
+        ImageIcon imgIcon = new ImageIcon(imageFilename);
+
+        if (imgIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+            imgIcon = new ImageIcon(getClass().getResource(imageFilename));
+        }
+
+        final Image img = imgIcon.getImage();
+        theGraphics.drawImage(img, i * SQUARE_SIZE, j * SQUARE_SIZE,
+                     SQUARE_SIZE, SQUARE_SIZE, this);
+
+    }
+    
+    
+    private void drawBorderLines(final Graphics2D theGraphics, 
+    							 final int theI, final int theJ) {
+    	
+    	final Paint oldPaint = theGraphics.getPaint();
+    	theGraphics.setPaint(Color.BLACK);
+    	
+    	final int leftx = theI * SQUARE_SIZE;
+    	final int topy = theI * SQUARE_SIZE;
+    	final int centerx = leftx + SQUARE_SIZE / 2;
+    	final int centery =  topy + SQUARE_SIZE / 2;
+        final int rightx = leftx + SQUARE_SIZE;
+        final int bottomy = topy + SQUARE_SIZE;
+        
+        theGraphics.drawLine(centerx, centery, centerx, topy); // above
+        theGraphics.drawLine(centerx, centery, centerx, bottomy); // below
+        theGraphics.drawLine(centerx, centery, leftx, centery); // left
+        theGraphics.drawLine(centerx, centery, rightx, centery); // right
+        
+        theGraphics.setPaint(oldPaint);
+    }
+} //end class GamePanel

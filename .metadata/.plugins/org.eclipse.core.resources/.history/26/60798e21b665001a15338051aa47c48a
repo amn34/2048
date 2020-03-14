@@ -1,0 +1,17 @@
+package view;
+import models.Block;
+
+public class GameMain {
+	
+	public static void main(String[] theArgs) {
+		Block block = new Block();
+		int counter = 0;
+		while(block.getNumber() != 4) {
+			System.out.println(block);
+			block = new Block();
+			counter++;
+		}
+		System.out.println(counter);
+	}
+
+}
