@@ -18,11 +18,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import logic.PropertyChangeEnabledGameControls;
-import logic.Game;
 import models.Block;
 
 
@@ -105,9 +102,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
     private void drawBoard(final Graphics2D theGraphics) {
     	
     	for(int i = 0; i < myBoard.length; i++) {
-			final int topy = i * SQUARE_SIZE; //determines the y position of the square
     		for(int j = 0; j < myBoard[i].length; j++) {
-    			final int leftx = j * SQUARE_SIZE; //determines the x position of the block
     			if(myBoard[i][j] != null) {
         			drawBlock(theGraphics, i, j, myBoard[i][j]);
     			}
@@ -134,15 +129,6 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 
     }
     
-    
-    private void drawBorderLines(final Graphics2D theGraphics, 
-    							 final int theI, final int theJ) {
-    	//TODO Draw borders and stuff 
-    	for(int i = 0; i < myBoard.length; i++) {
-    		//draw the vertical/horizontal lines 
-    	}
-    }
-
 	@Override
 	public void propertyChange(final PropertyChangeEvent theEvent) {
 		switch(theEvent.getPropertyName()) {
@@ -160,23 +146,19 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 			case KeyEvent.VK_UP:
 				//handle up
 				myGame.moveUp();
-				System.out.println("UP");
 				break;
 
 			case KeyEvent.VK_DOWN:
 				//handle down
 				myGame.moveDown();
-				System.out.println("DOWN");
 				break;
 			case KeyEvent.VK_LEFT:
 				//handle left
 				myGame.moveLeft();
-				System.out.println("LEFT");
 				break;
 			case KeyEvent.VK_RIGHT:
 				//handle right
 				myGame.moveRight();
-				System.out.println("RIGHT");
 				break;
 			default:
 				break;

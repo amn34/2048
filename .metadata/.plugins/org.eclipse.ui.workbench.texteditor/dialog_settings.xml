@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value=""/>
+		<item key="selection" value="Sys"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="sys"/>
+			<item value="sysout"/>
+			<item value="init"/>
+			<item value="mirro"/>
+			<item value="myGame"/>
+			<item value="myRoad"/>
+			<item value="myyRoad"/>
 			<item value="myPcs"/>
 			<item value="fire"/>
 			<item value="add(panel"/>
@@ -16,10 +23,6 @@
 			<item value="panel"/>
 			<item value="default"/>
 			<item value="KIT"/>
-			<item value="SIZE"/>
-			<item value="Block"/>
-			<item value="Terrain.Values"/>
-			<item value="myGrid"/>
 		</list>
 		<list key="replacehistory">
 		</list>

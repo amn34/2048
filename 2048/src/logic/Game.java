@@ -2,7 +2,6 @@ package logic;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.Random;
 
 import models.Block;
@@ -10,6 +9,8 @@ import models.Block;
 public class Game implements PropertyChangeEnabledGameControls{
 
 	
+	
+	//TODO Fix multiline combinations in one move 
 	
 	
 	
@@ -33,133 +34,177 @@ public class Game implements PropertyChangeEnabledGameControls{
 		myRandom = new Random();
 		
 		//initial board state, need to mirror this in the GUI class  
-		myBoard[0][1] = new Block();
-		myBoard[0][2] = new Block();		
+		initBoard();
 	}
 	
+	
+	/**
+	 * Starts the game with two blocks on the board. 
+	 */
+	private void initBoard() {
+		newBlock();
+		newBlock();
+	}
 	
 	
 	
 	@Override
 	public void moveLeft() {
+		boolean changed = false;
 		for(int i = 0; i < myBoard.length; i++) {
 			for(int j = 0; j < myBoard[i].length; j++) {
 				if(i != 0) {
-					shiftLeft(i, j);
+					//if the board changed the set the flag to add a block
+					if(shiftLeft(i, j)) {
+						changed = true;
+					}
 				}
 			}
 		}
-		newBlock();
+		if(changed) {
+			newBlock();
+		}
 		fireBoardChange();	
 	}	
 
 	//combines the blocks on the top first
-	private void shiftLeft(int i, int j) {
+	//returns whether or not the board changed
+	private boolean shiftLeft(int i, int j) {
+		boolean changed = false;
 		for(int y = i; y > 0; y--) {
-			if(myBoard[y-1][j] == null) {
-				myBoard[y-1][j] = myBoard[y][j];
-				myBoard[y][j] = null;
-			} else if(myBoard[y][j] != null) {
-				if(myBoard[y-1][j].getNumber() == myBoard[y][j].getNumber()) {
+			
+			if(myBoard[y][j] != null) {
+				if(myBoard[y-1][j] == null) {
+					myBoard[y-1][j] = myBoard[y][j];
+					myBoard[y][j] = null;
+					changed = true;
+				} else if(myBoard[y-1][j].getNumber() == myBoard[y][j].getNumber()) {
 					myBoard[y-1][j].combine();
 					myBoard[y][j] = null;
+					changed = true;
+					y = 0; //break the loop idk how to do this properly
 				}
-			} else {
-				break;
 			}
 		}
+		return changed;
 	}
 	
 	
 	
 	@Override
 	public void moveRight() {
+		boolean changed=  false;
 		for(int i = myBoard.length - 1; i >= 0; i--) {
 			for(int j = 0; j < myBoard[i].length; j++) {
 				if(i != myBoard.length) {
-					shiftRight(i, j);
+					if(shiftRight(i, j)) {
+						changed = true;
+					}
 				}
 			}
+		}
+		if(changed) {
+			newBlock();
 		}
 		fireBoardChange();
 	}
 	
 	//combines the blocks on the bottom first 
-	private void shiftRight(int i, int j) {
-		
+	private boolean shiftRight(int i, int j) {
+		boolean changed = false;
 		for(int y = i; y < myBoard.length - 1; y++) {
-			if(myBoard[y+1][j] == null) {
-				myBoard[y+1][j] = myBoard[y][j];
-				myBoard[y][j] = null;
-			} else if (myBoard[y][j] != null) {
-				if (myBoard[y+1][j].getNumber() == myBoard[y][j].getNumber()) {
+			
+			if (myBoard[y][j] != null) {
+				if(myBoard[y+1][j] == null) {
+					myBoard[y+1][j] = myBoard[y][j];
+					myBoard[y][j] = null;
+					changed =  true;
+				} else if (myBoard[y+1][j].getNumber() == myBoard[y][j].getNumber()) {
 					myBoard[y+1][j].combine();
 					myBoard[y][j] = null;
-				}
-
-			} else {
-				break;
+					changed = true;
+					y = myBoard.length; //break the loop idk how to do this properly
+				}	
 			}
 		}
+		return changed;
 	}
 	
 	@Override
 	public void moveUp() {
-		
+		boolean changed = false;
 		for(int j = 0; j < myBoard[0].length; j++) {
 			for(int i = 0; i < myBoard.length; i++) {
 				if(j != 0) {
-					shiftUp(i,j);
+					if(shiftUp(i,j)) {
+						changed = true;
+					}
 				}
 			}
+		}
+		if(changed) {
+			newBlock();
 		}
 		fireBoardChange();
 	}
 	
 	//combines the blocks on the left first 
-	private void shiftUp(int i, int j) {
+	private boolean shiftUp(int i, int j) {
+		boolean changed = false;
 		for(int x = j; x > 0; x--) {
-			if(myBoard[i][x-1] == null) {
-				myBoard[i][x-1] = myBoard[i][x];
-				myBoard[i][x] = null;
-			} else if (myBoard[i][x] != null) {
-				if (myBoard[i][x-1].getNumber() == myBoard[i][x].getNumber()) {
+			
+			if (myBoard[i][x] != null) {
+				if(myBoard[i][x-1] == null) {
+					myBoard[i][x-1] = myBoard[i][x];
+					myBoard[i][x] = null;
+					changed = true;
+				} else if (myBoard[i][x-1].getNumber() == myBoard[i][x].getNumber()) {
 					myBoard[i][x-1].combine();
 					myBoard[i][x] = null;
-				}
-			} else {
-				break;
+					changed = true;
+					x = 0; //break the loop idk how to do this properly
+				}	
 			}
 		}
+		return changed;
 	}
 	
 
 	@Override
 	public void moveDown() {
+		boolean changed = false;
 		for(int j = myBoard[0].length - 1; j >= 0 ; j--) {
 			for(int i = 0; i < myBoard.length; i++) {
 				if(j != myBoard[0].length - 1) {
-					shiftDown(i,j);
+					if(shiftDown(i,j)) {
+						changed = true;
+					}
 				}
 			}
+		}
+		if(changed) {
+			newBlock();
 		}
 		fireBoardChange();
 	}
 	
-	private void shiftDown(int i, int j) {
+	private boolean shiftDown(int i, int j) {
+		boolean changed = false;
 		for(int x = j; x < myBoard[i].length - 1; x++) {
-			if(myBoard[i][x+1] == null) {
-				myBoard[i][x+1] = myBoard[i][x];
-				myBoard[i][x] = null;
-			} else if (myBoard[i][x] != null) {
-				if(myBoard[i][x+1].getNumber() == myBoard[i][x].getNumber()) {
+			if (myBoard[i][x] != null) {
+				if(myBoard[i][x+1] == null) {
+					myBoard[i][x+1] = myBoard[i][x];
+					myBoard[i][x] = null;
+					changed = true;
+				} else if(myBoard[i][x+1].getNumber() == myBoard[i][x].getNumber()) {
 					myBoard[i][x+1].combine();
 					myBoard[i][x] = null;
-				}
-			} else {
-				break;
+					changed = true;
+					x = myBoard[i].length; //break the loop idk how to do this properly
+				} 
 			}
 		}
+		return changed;
 	}
 	
 	private void newBlock() {
@@ -176,10 +221,6 @@ public class Game implements PropertyChangeEnabledGameControls{
 	public void start() {
 		fireBoardChange();
 	}
-	
-	
-	
-	
 	
     /**
      * Inform PropertyChagneListeners of the current state of vehicles.
