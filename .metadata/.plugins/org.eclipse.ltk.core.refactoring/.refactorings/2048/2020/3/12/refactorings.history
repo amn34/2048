@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;&apos; to &apos;logic.Game.fireBoardChange()&apos;&#x0D;&#x0A;- Original project: &apos;2048&apos;&#x0D;&#x0A;- Destination element: &apos;logic.Game.fireBoardChange()&apos;&#x0D;&#x0A;- Original element: &apos;logic.Game.shiftRight(...)&apos;" description="Copy method" destination="/src&lt;logic{Game.java[Game~fireBoardChange" element1="/src&lt;logic{Game.java[Game~shiftRight~I~I" flags="589830" id="org.eclipse.jdt.ui.copy" members="1" policy="org.eclipse.jdt.ui.copyMembers" stamp="1584245516417" version="1.0"/>
+</session>

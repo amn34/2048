@@ -53,8 +53,6 @@ public class GameGUI extends JFrame implements ActionListener {
     	myGame = new Game(new Block[4][4]);
     	initGUI();
     	setVisible(true);
-    	
-
     }
     
     
@@ -62,7 +60,7 @@ public class GameGUI extends JFrame implements ActionListener {
      * Sets up the GUI
      */
     private void initGUI() {
-    	final GamePanel panel = new GamePanel(4, 4);
+    	final GamePanel panel = new GamePanel(4, 4, myGame);
     	myGame.addPropertyChangeListener(panel);
     	
     	

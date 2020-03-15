@@ -3,6 +3,7 @@ package logic;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Random;
 
 import models.Block;
 
@@ -22,37 +23,47 @@ public class Game implements PropertyChangeEnabledGameControls{
      */
     private final PropertyChangeSupport myPcs;
 	
-	
+    private Random myRandom;
+
+    
+    
 	public Game(final Block[][] theBoard) {
 		myBoard = theBoard.clone();
 		myPcs = new PropertyChangeSupport(this);
+		myRandom = new Random();
+		
+		//initial board state, need to mirror this in the GUI class  
+		myBoard[0][1] = new Block();
+		myBoard[0][2] = new Block();		
 	}
 	
 	
 	
 	
 	@Override
-	public void moveUp() {
+	public void moveLeft() {
 		for(int i = 0; i < myBoard.length; i++) {
 			for(int j = 0; j < myBoard[i].length; j++) {
 				if(i != 0) {
-					shiftUp(i, j);
+					shiftLeft(i, j);
 				}
 			}
 		}
+		newBlock();
 		fireBoardChange();	
-	}
-
+	}	
 
 	//combines the blocks on the top first
-	private void shiftUp(int i, int j) {
+	private void shiftLeft(int i, int j) {
 		for(int y = i; y > 0; y--) {
 			if(myBoard[y-1][j] == null) {
 				myBoard[y-1][j] = myBoard[y][j];
 				myBoard[y][j] = null;
-			} else if(myBoard[y-1][j].getNumber() == myBoard[y][j].getNumber()) {
-				myBoard[y-1][j].combine();
-				myBoard[y][j] = null;
+			} else if(myBoard[y][j] != null) {
+				if(myBoard[y-1][j].getNumber() == myBoard[y][j].getNumber()) {
+					myBoard[y-1][j].combine();
+					myBoard[y][j] = null;
+				}
 			} else {
 				break;
 			}
@@ -62,11 +73,11 @@ public class Game implements PropertyChangeEnabledGameControls{
 	
 	
 	@Override
-	public void moveDown() {
+	public void moveRight() {
 		for(int i = myBoard.length - 1; i >= 0; i--) {
 			for(int j = 0; j < myBoard[i].length; j++) {
 				if(i != myBoard.length) {
-					shiftDown(i, j);
+					shiftRight(i, j);
 				}
 			}
 		}
@@ -74,15 +85,18 @@ public class Game implements PropertyChangeEnabledGameControls{
 	}
 	
 	//combines the blocks on the bottom first 
-	private void shiftDown(int i, int j) {
+	private void shiftRight(int i, int j) {
 		
 		for(int y = i; y < myBoard.length - 1; y++) {
 			if(myBoard[y+1][j] == null) {
 				myBoard[y+1][j] = myBoard[y][j];
 				myBoard[y][j] = null;
-			} else if (myBoard[y+1][j].getNumber() == myBoard[y][j].getNumber()) {
-				myBoard[y+1][j].combine();
-				myBoard[y][j] = null;
+			} else if (myBoard[y][j] != null) {
+				if (myBoard[y+1][j].getNumber() == myBoard[y][j].getNumber()) {
+					myBoard[y+1][j].combine();
+					myBoard[y][j] = null;
+				}
+
 			} else {
 				break;
 			}
@@ -90,12 +104,12 @@ public class Game implements PropertyChangeEnabledGameControls{
 	}
 	
 	@Override
-	public void moveLeft() {
+	public void moveUp() {
 		
 		for(int j = 0; j < myBoard[0].length; j++) {
 			for(int i = 0; i < myBoard.length; i++) {
 				if(j != 0) {
-					shiftLeft(i,j);
+					shiftUp(i,j);
 				}
 			}
 		}
@@ -103,14 +117,16 @@ public class Game implements PropertyChangeEnabledGameControls{
 	}
 	
 	//combines the blocks on the left first 
-	private void shiftLeft(int i, int j) {
+	private void shiftUp(int i, int j) {
 		for(int x = j; x > 0; x--) {
 			if(myBoard[i][x-1] == null) {
 				myBoard[i][x-1] = myBoard[i][x];
 				myBoard[i][x] = null;
-			} else if (myBoard[i][x-1].getNumber() == myBoard[i][x].getNumber()) {
-				myBoard[i][x-1].combine();
-				myBoard[i][x] = null;
+			} else if (myBoard[i][x] != null) {
+				if (myBoard[i][x-1].getNumber() == myBoard[i][x].getNumber()) {
+					myBoard[i][x-1].combine();
+					myBoard[i][x] = null;
+				}
 			} else {
 				break;
 			}
@@ -119,30 +135,51 @@ public class Game implements PropertyChangeEnabledGameControls{
 	
 
 	@Override
-	public void moveRight() {
-		for(int j = myBoard[0].length - 1; j >= 0 ; j++) {
+	public void moveDown() {
+		for(int j = myBoard[0].length - 1; j >= 0 ; j--) {
 			for(int i = 0; i < myBoard.length; i++) {
-				if(j != 0) {
-					shiftRight(i,j);
+				if(j != myBoard[0].length - 1) {
+					shiftDown(i,j);
 				}
 			}
 		}
 		fireBoardChange();
 	}
 	
-	private void shiftRight(int i, int j) {
-		for(int x = j; x < myBoard[i].length; x++) {
+	private void shiftDown(int i, int j) {
+		for(int x = j; x < myBoard[i].length - 1; x++) {
 			if(myBoard[i][x+1] == null) {
 				myBoard[i][x+1] = myBoard[i][x];
 				myBoard[i][x] = null;
-			} else if (myBoard[i][x+1].getNumber() == myBoard[i][x].getNumber()) {
-				myBoard[i][x+1].combine();
-				myBoard[i][x] = null;
+			} else if (myBoard[i][x] != null) {
+				if(myBoard[i][x+1].getNumber() == myBoard[i][x].getNumber()) {
+					myBoard[i][x+1].combine();
+					myBoard[i][x] = null;
+				}
 			} else {
 				break;
 			}
 		}
 	}
+	
+	private void newBlock() {
+		
+		int i = myRandom.nextInt(myBoard.length);
+		int j = myRandom.nextInt(myBoard[0].length);
+		while(myBoard[i][j] != null) {
+			i = myRandom.nextInt(myBoard.length);
+			j = myRandom.nextInt(myBoard[0].length);
+		}
+		myBoard[i][j] = new Block();
+	}
+	
+	public void start() {
+		fireBoardChange();
+	}
+	
+	
+	
+	
 	
     /**
      * Inform PropertyChagneListeners of the current state of vehicles.

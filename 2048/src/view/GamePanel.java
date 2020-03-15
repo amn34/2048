@@ -20,6 +20,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import logic.PropertyChangeEnabledGameControls;
+import logic.Game;
 import models.Block;
 
 
@@ -54,37 +57,26 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
      */
     private Block[][] myBoard;
     
+    private PropertyChangeEnabledGameControls myGame;
+    
     /**
      * Construct a new Panel.
      * @param theWidth width of the 2D grid of Terrain that defines the map
      * @param theHeight height of the 2D grid of Terrain that defines the map
      */
-    public GamePanel(final int theWidth, final int theHeight) {
+    public GamePanel(final int theWidth, final int theHeight,
+    		final PropertyChangeEnabledGameControls theGame) {
         super();
         
         //4x4 grid 
         myBoard = new Block[4][4];
+        myGame = theGame;
         setPreferredSize(new Dimension(theWidth * SQUARE_SIZE,
                                        theHeight * SQUARE_SIZE));
         setBackground(Color.GREEN);
         setFont(FONT);
         
-        
-        //TODO Remove this
-        //testing
-        initBoard();
-    }
-    
-    /**
-     * TODO remove this 
-     * Testing for images. 
-     */
-    private void initBoard() {
-    	for(int i = 0; i < myBoard.length; i++) {
-    		for(int j =0; j < myBoard[i].length; j++) {
-    			myBoard[i][j] = new Block();
-    		}
-    	}
+        addKeyListener(this);        
     }
     
     // Instance Methods 
@@ -121,6 +113,11 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
     			}
     		}
     	} 	
+    }
+    
+    public void addNotify() {
+        super.addNotify();
+        requestFocus();
     }
     
     private void drawBlock(Graphics2D theGraphics, int i, int j, Block theBlock) {
@@ -162,12 +159,31 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 		switch(keyCode) {
 			case KeyEvent.VK_UP:
 				//handle up
+				myGame.moveUp();
+				System.out.println("UP");
+				break;
+
 			case KeyEvent.VK_DOWN:
 				//handle down
+				myGame.moveDown();
+				System.out.println("DOWN");
+				break;
 			case KeyEvent.VK_LEFT:
 				//handle left
+				myGame.moveLeft();
+				System.out.println("LEFT");
+				break;
 			case KeyEvent.VK_RIGHT:
-				//handle right 
+				//handle right
+				myGame.moveRight();
+				System.out.println("RIGHT");
+				break;
+			case KeyEvent.VK_SPACE:
+				((Game) myGame).start();
+				System.out.println();
+
+			default:
+				break;
 		}
 		
 	}
@@ -175,7 +191,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 	public void keyReleased(KeyEvent arg0) {} //do nothing	
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {} //do nothign 
+	public void keyTyped(KeyEvent arg0) {} //do nothing
 	
 	
 } //end class GamePanel
