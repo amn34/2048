@@ -1,5 +1,7 @@
 package view;
 
+import static logic.PropertyChangeEnabledGameControls.PROPERTY_BOARD;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,12 +11,20 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import models.Block;
 
-public class GamePanel extends JPanel {
+
+
+public class GamePanel extends JPanel implements PropertyChangeListener, KeyListener{
 	
     /**
      * The UID of this class (to avoid warnings).
@@ -36,7 +46,7 @@ public class GamePanel extends JPanel {
     /**
      * The size in pixels of a side of one "square" on the grid.
      */
-    private static final int SQUARE_SIZE = 40;
+    private static final int SQUARE_SIZE = 150;
     
     
     /**
@@ -62,8 +72,19 @@ public class GamePanel extends JPanel {
         
         //TODO Remove this
         //testing
-        myBoard[0][1] = new Block();
-        myBoard[3][3] = new Block();
+        initBoard();
+    }
+    
+    /**
+     * TODO remove this 
+     * Testing for images. 
+     */
+    private void initBoard() {
+    	for(int i = 0; i < myBoard.length; i++) {
+    		for(int j =0; j < myBoard[i].length; j++) {
+    			myBoard[i][j] = new Block();
+    		}
+    	}
     }
     
     // Instance Methods 
@@ -124,4 +145,37 @@ public class GamePanel extends JPanel {
     		//draw the vertical/horizontal lines 
     	}
     }
+
+	@Override
+	public void propertyChange(final PropertyChangeEvent theEvent) {
+		switch(theEvent.getPropertyName()) {
+			case PROPERTY_BOARD:
+				myBoard = (Block[][]) theEvent.getNewValue();
+				repaint();
+		}
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent theKeyPress) {
+		int keyCode = theKeyPress.getKeyCode();
+		switch(keyCode) {
+			case KeyEvent.VK_UP:
+				//handle up
+			case KeyEvent.VK_DOWN:
+				//handle down
+			case KeyEvent.VK_LEFT:
+				//handle left
+			case KeyEvent.VK_RIGHT:
+				//handle right 
+		}
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent arg0) {} //do nothing	
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {} //do nothign 
+	
+	
 } //end class GamePanel

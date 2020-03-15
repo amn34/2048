@@ -10,6 +10,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import logic.Game;
+import logic.PropertyChangeEnabledGameControls;
+import models.Block;
+
 public class GameGUI extends JFrame implements ActionListener {
 
 	
@@ -36,10 +40,17 @@ public class GameGUI extends JFrame implements ActionListener {
     /** The Dimension of the screen. */
     private static final Dimension SCREEN_SIZE = KIT.getScreenSize();
 
+    
+    /**
+     * The logic for the simulation. 
+     */
+    private final PropertyChangeEnabledGameControls myGame;
+    
+    
     public GameGUI() {
     	super(TITLE);
-    	
-    	//myGame.start()
+    	//creates a 4x4 game
+    	myGame = new Game(new Block[4][4]);
     	initGUI();
     	setVisible(true);
     	
@@ -52,7 +63,7 @@ public class GameGUI extends JFrame implements ActionListener {
      */
     private void initGUI() {
     	final GamePanel panel = new GamePanel(4, 4);
-    	//game.addPropertyChangeLIstener(panel);
+    	myGame.addPropertyChangeListener(panel);
     	
     	
     	final Container masterPanel = new JPanel(new BorderLayout());

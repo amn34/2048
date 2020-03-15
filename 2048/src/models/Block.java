@@ -22,6 +22,10 @@ public class Block {
 		return myNumber;
 	}
 	
+	public void combine() {
+		myNumber = myNumber * 2;
+	}
+	
 	@Override
 	public String toString() {
 		return Integer.toString(myNumber);
