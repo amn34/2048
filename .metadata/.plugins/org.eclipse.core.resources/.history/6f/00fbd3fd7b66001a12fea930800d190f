@@ -146,6 +146,9 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 	@Override
 	public void propertyChange(final PropertyChangeEvent theEvent) {
 		switch(theEvent.getPropertyName()) {
+			case PROPERTY_START: 
+				myBoard = (Block[][]) theEvent.getNewValue();
+				repaint();
 			case PROPERTY_BOARD:
 				myBoard = (Block[][]) theEvent.getNewValue();
 				repaint();
@@ -178,6 +181,10 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 				myGame.moveRight();
 				System.out.println("RIGHT");
 				break;
+			case KeyEvent.VK_SPACE:
+				((Game) myGame).start();
+				System.out.println();
+
 			default:
 				break;
 		}

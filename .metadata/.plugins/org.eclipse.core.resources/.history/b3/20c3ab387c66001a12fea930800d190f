@@ -62,7 +62,7 @@ public class GameGUI extends JFrame implements ActionListener {
     private void initGUI() {
     	final GamePanel panel = new GamePanel(4, 4, myGame);
     	myGame.addPropertyChangeListener(panel);
-    	((Game) myGame).start();
+    	myGame.start();
     	
     	final Container masterPanel = new JPanel(new BorderLayout());
     	masterPanel.add(panel, BorderLayout.CENTER);
