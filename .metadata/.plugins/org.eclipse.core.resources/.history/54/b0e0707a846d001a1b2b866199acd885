@@ -190,10 +190,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[i][x-1].combine();
 					myBoard[i][x] = null;
 					changed = true;
-					break;
-				} else {
-					break;
-				}
+					x = 0; //break the loop idk how to do this properly
+				}	
 			}
 		}
 		return changed;
@@ -232,10 +230,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[i][x+1].combine();
 					myBoard[i][x] = null;
 					changed = true;
-					break;
-				}  else {
-					break;
-				}
+					x = myBoard[i].length; //break the loop idk how to do this properly
+				} 
 			}
 		}
 		return changed;

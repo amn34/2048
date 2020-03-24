@@ -50,35 +50,18 @@ public class Game implements PropertyChangeEnabledGameControls{
 	
 	@Override
 	public void moveUp() {
+		System.out.println("LEFT");
 		boolean changed = false;
-//		for(int i = 0; i < myBoard.length; i++) {
-//			for(int j = 0; j < myBoard[i].length; j++) {
-//				if(i != 0) {
-//					//if the board changed the set the flag to add a block
-//					if(shiftUp(i, j)) {
-//						changed = true;
-//					}
-//				}
-//			}
-//		}
-		
-		int counter = 1;
-		
-		for(int j = 0; j < myBoard[0].length; j++) {
-			for(int i = 0; i  < myBoard.length; i++) {
-				boolean combined = false;
-				if(i != 0 && myBoard[i][j] != null) {
-					//if the board is shifted then 
-					if(shiftUp(i,j)) {
+		for(int i = 0; i < myBoard.length; i++) {
+			for(int j = 0; j < myBoard[i].length; j++) {
+				if(i != 0) {
+					//if the board changed the set the flag to add a block
+					if(shiftUp(i, j)) {
 						changed = true;
-					}	
+					}
 				}
-				System.out.println(counter);
-				counter++;
 			}
 		}
-		
-		
 		if(changed) {
 			newBlock();
 		}
@@ -88,7 +71,7 @@ public class Game implements PropertyChangeEnabledGameControls{
 	//combines the blocks on the top first
 	//returns whether or not the board changed
 	private boolean shiftUp(int i, int j) {
-		System.out.println("UP");
+		System.out.println("Up");
 		boolean changed = false;
 		for(int y = i; y > 0; y--) {
 			
@@ -102,9 +85,7 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[y-1][j].combine();
 					myBoard[y][j] = null;
 					changed = true;
-					break;
-				} else {
-					break;
+					y = 0; //break the loop idk how to do this properly
 				}
 			}
 		}
@@ -115,14 +96,14 @@ public class Game implements PropertyChangeEnabledGameControls{
 	
 	@Override
 	public void moveDown() {
+		System.out.println("RIGHT");
 		boolean changed=  false;
 		for(int i = myBoard.length - 1; i >= 0; i--) {
 			for(int j = 0; j < myBoard[i].length; j++) {
-				if(i != myBoard.length - 1 && myBoard[i][j] != null) {
-					//if the board is shifted then 
-					if(shiftDown(i,j)) {
+				if(i != myBoard.length) {
+					if(shiftDown(i, j)) {
 						changed = true;
-					}	
+					}
 				}
 			}
 		}
@@ -134,7 +115,7 @@ public class Game implements PropertyChangeEnabledGameControls{
 	
 	//combines the blocks on the bottom first 
 	private boolean shiftDown(int i, int j) {
-		System.out.println("DOWN");
+		System.out.println("RIGHT");
 		boolean changed = false;
 		for(int y = i; y < myBoard.length - 1; y++) {
 			
@@ -147,10 +128,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[y+1][j].combine();
 					myBoard[y][j] = null;
 					changed = true;
-					break;
-				} else {
-					break;
-				}
+					y = myBoard.length; //break the loop idk how to do this properly
+				}	
 			}
 		}
 		return changed;
@@ -158,14 +137,14 @@ public class Game implements PropertyChangeEnabledGameControls{
 	
 	@Override
 	public void moveLeft() {
+		System.out.println("UP");
 		boolean changed = false;
 		for(int j = 0; j < myBoard[0].length; j++) {
 			for(int i = 0; i < myBoard.length; i++) {
-				if(j != 0 && myBoard[i][j] != null) {
-					//if the board is shifted then 
+				if(j != 0) {
 					if(shiftLeft(i,j)) {
 						changed = true;
-					}	
+					}
 				}
 			}
 		}
@@ -177,7 +156,7 @@ public class Game implements PropertyChangeEnabledGameControls{
 	
 	//combines the blocks on the left first 
 	private boolean shiftLeft(int i, int j) {
-		System.out.println("LEFT");
+		System.out.println("UP");
 		boolean changed = false;
 		for(int x = j; x > 0; x--) {
 			
@@ -190,10 +169,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[i][x-1].combine();
 					myBoard[i][x] = null;
 					changed = true;
-					break;
-				} else {
-					break;
-				}
+					x = 0; //break the loop idk how to do this properly
+				}	
 			}
 		}
 		return changed;
@@ -202,14 +179,14 @@ public class Game implements PropertyChangeEnabledGameControls{
 
 	@Override
 	public void moveRight() {
+		System.out.println("DOWN");
 		boolean changed = false;
 		for(int j = myBoard[0].length - 1; j >= 0 ; j--) {
 			for(int i = 0; i < myBoard.length; i++) {
-				if(j != myBoard[0].length - 1 && myBoard[i][j] != null) {
-					//if the board is shifted then 
+				if(j != myBoard[0].length - 1) {
 					if(shiftRight(i,j)) {
 						changed = true;
-					}	
+					}
 				}
 			}
 		}
@@ -220,7 +197,7 @@ public class Game implements PropertyChangeEnabledGameControls{
 	}
 	
 	private boolean shiftRight(int i, int j) {
-		System.out.println("RIGHT");
+		System.out.println("DOWN");
 		boolean changed = false;
 		for(int x = j; x < myBoard[i].length - 1; x++) {
 			if (myBoard[i][x] != null) {
@@ -232,10 +209,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[i][x+1].combine();
 					myBoard[i][x] = null;
 					changed = true;
-					break;
-				}  else {
-					break;
-				}
+					x = myBoard[i].length; //break the loop idk how to do this properly
+				} 
 			}
 		}
 		return changed;

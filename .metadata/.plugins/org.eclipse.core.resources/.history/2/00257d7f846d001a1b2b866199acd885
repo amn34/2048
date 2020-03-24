@@ -234,7 +234,7 @@ public class Game implements PropertyChangeEnabledGameControls{
 					changed = true;
 					break;
 				}  else {
-					break;
+					breka;
 				}
 			}
 		}

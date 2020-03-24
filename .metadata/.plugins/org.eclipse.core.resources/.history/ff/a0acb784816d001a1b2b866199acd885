@@ -73,7 +73,6 @@ public class Game implements PropertyChangeEnabledGameControls{
 						changed = true;
 					}	
 				}
-				System.out.println(counter);
 				counter++;
 			}
 		}
@@ -102,9 +101,7 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[y-1][j].combine();
 					myBoard[y][j] = null;
 					changed = true;
-					break;
-				} else {
-					break;
+					y = 0; //break the loop idk how to do this properly
 				}
 			}
 		}
@@ -147,10 +144,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[y+1][j].combine();
 					myBoard[y][j] = null;
 					changed = true;
-					break;
-				} else {
-					break;
-				}
+					y = myBoard.length; //break the loop idk how to do this properly
+				}	
 			}
 		}
 		return changed;
@@ -190,10 +185,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[i][x-1].combine();
 					myBoard[i][x] = null;
 					changed = true;
-					break;
-				} else {
-					break;
-				}
+					x = 0; //break the loop idk how to do this properly
+				}	
 			}
 		}
 		return changed;
@@ -232,10 +225,8 @@ public class Game implements PropertyChangeEnabledGameControls{
 					myBoard[i][x+1].combine();
 					myBoard[i][x] = null;
 					changed = true;
-					break;
-				}  else {
-					break;
-				}
+					x = myBoard[i].length; //break the loop idk how to do this properly
+				} 
 			}
 		}
 		return changed;

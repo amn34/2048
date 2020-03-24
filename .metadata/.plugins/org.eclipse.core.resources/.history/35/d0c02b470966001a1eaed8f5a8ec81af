@@ -1,7 +1,0 @@
-package view;
-
-public class GameGUI extends JFrame implements ActionListener {
-	
-	
-
-}
