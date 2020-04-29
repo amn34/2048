@@ -15,14 +15,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import logic.PropertyChangeEnabledGameControls;
 import models.Block;
-
-
 
 public class GamePanel extends JPanel implements PropertyChangeListener, KeyListener{
 	
@@ -42,7 +41,6 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
     private static final BasicStroke STROKE = new BasicStroke(3, BasicStroke.CAP_BUTT,
                                                               BasicStroke.JOIN_MITER, 2,
                                                               new float[] {2, 2, 2, 2}, 0);
-    
     /**
      * The size in pixels of a side of one "square" on the grid.
      */
@@ -54,10 +52,13 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
      */
     private Block[][] myBoard;
     
+    /**
+     * Controller for the game. 
+     */
     private PropertyChangeEnabledGameControls myGame;
     
     /**
-     * Construct a new Panel.
+     * Construct a panel for the game to abe drawn on. 
      * @param theWidth width of the 2D grid of Terrain that defines the map
      * @param theHeight height of the 2D grid of Terrain that defines the map
      */
@@ -119,14 +120,17 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
     	} 	
     }
     
-   
+   /**
+    * Draws the block at its specified position. 
+    * @param theGraphics the Graphics2D object
+    * @param i row-number
+    * @param j column-number
+    * @param theBlock block to be drawn 
+    */
     private void drawBlock(Graphics2D theGraphics, int i, int j, Block theBlock) {
-        final String imageFilename = "icons//" + theBlock.getImageFileName() + ".png";
-        ImageIcon imgIcon = new ImageIcon(imageFilename);
 
-        if (imgIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-            imgIcon = new ImageIcon(getClass().getResource(imageFilename));
-        }
+    	final URL url  = GamePanel.class.getResource("/" + theBlock.getImageFileName() + ".png");
+    	ImageIcon imgIcon = new ImageIcon(url);
 
         final Image img = imgIcon.getImage();
         theGraphics.drawImage(img, j * SQUARE_SIZE, i * SQUARE_SIZE,
@@ -138,19 +142,10 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 	public void propertyChange(final PropertyChangeEvent theEvent) {
 		switch(theEvent.getPropertyName()) {
 			case PROPERTY_BOARD:
+				addNotify(); //gives focus back to the panel so it can hear key inputs
 				myBoard = (Block[][]) theEvent.getNewValue();
 				repaint();
-				for(int col = 0; col < myBoard.length; col++) {
-					for(int row = 0; row < myBoard.length; row++) {
-						if(myBoard[col][row] == null) {
-							System.out.print("NULL ");
-						} else {
-							System.out.print(myBoard[col][row] + " ");
-						}
-					}
-					System.out.println();
-				}
-				System.out.println("----------------");
+				
 		}
 		
 	}
@@ -161,23 +156,19 @@ public class GamePanel extends JPanel implements PropertyChangeListener, KeyList
 		switch(keyCode) {
 			case KeyEvent.VK_UP:
 				//handle up
-				System.out.println("UP");
 				myGame.moveUp();
 				break;
 
 			case KeyEvent.VK_DOWN:
 				//handle down
-				System.out.println("DOWN");
 				myGame.moveDown();
 				break;
 			case KeyEvent.VK_LEFT:
 				//handle left
-				System.out.println("LEFT");
 				myGame.moveLeft();
 				break;
 			case KeyEvent.VK_RIGHT:
 				//handle right
-				System.out.println("RIGHT");
 				myGame.moveRight();
 				break;
 			default:

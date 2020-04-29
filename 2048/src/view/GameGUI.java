@@ -3,10 +3,12 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -41,6 +43,10 @@ public class GameGUI extends JFrame implements ActionListener {
     private static final Dimension SCREEN_SIZE = KIT.getScreenSize();
 
     
+    
+    private final JButton myResetButton;
+    private final JButton myBackButton;
+    
     /**
      * The logic for the simulation. 
      */
@@ -51,6 +57,11 @@ public class GameGUI extends JFrame implements ActionListener {
     	super(TITLE);
     	//creates a 4x4 game
     	myGame = new Game(new Block[4][4]);
+    	
+    	myResetButton = new JButton("RESET");
+    	myBackButton = new JButton("BACK");
+    	
+    	initButtons();
     	initGUI();
     	setVisible(true);
     }
@@ -60,12 +71,22 @@ public class GameGUI extends JFrame implements ActionListener {
      * Sets up the GUI
      */
     private void initGUI() {
+    	
+    	//main game in the center
     	final GamePanel panel = new GamePanel(4, 4, myGame);
     	myGame.addPropertyChangeListener(panel);
     	((Game) myGame).start();
     	
+    	//bottom tool bar
+    	final Container southPanel = new JPanel(new FlowLayout());
+    	southPanel.add(myBackButton);
+    	southPanel.add(myResetButton);
+    	
     	final Container masterPanel = new JPanel(new BorderLayout());
     	masterPanel.add(panel, BorderLayout.CENTER);
+    	masterPanel.add(southPanel, BorderLayout.SOUTH);
+    	
+    	
     	add(masterPanel);
     	pack();
     	
@@ -75,4 +96,10 @@ public class GameGUI extends JFrame implements ActionListener {
     	
     	 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+    private void initButtons() {
+    	myBackButton.addActionListener(theAction -> ((Game) myGame).revert());	
+    	myResetButton.addActionListener(theAction -> ((Game) myGame).clear());
+    }
+    
 }

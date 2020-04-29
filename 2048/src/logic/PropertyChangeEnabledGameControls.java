@@ -10,6 +10,8 @@ public interface PropertyChangeEnabledGameControls extends GameControls{
 	
 	String PROPERTY_BOARD = "board";
 	
+	String PROPERTY_GAME_OVER = "game over";
+	
 	
 	void addPropertyChangeListener(PropertyChangeListener theListener);
 	

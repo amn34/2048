@@ -18,6 +18,11 @@ public class Block {
 		}
 	}
 	
+	public Block(int num) {
+		myNumber = num;
+	}
+	
+	
 	public int getNumber() {
 		return myNumber;
 	}
